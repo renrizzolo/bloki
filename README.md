@@ -4,7 +4,7 @@ Bloki
 A grid system for React.  
 Uses the new context API – so **you need to use react > 16.3.0**
 
-![Bloki logo](bloki_logo.png "Bloki")
+![Bloki logo](Bloki_logo.png "Bloki")
 
 ### Features:
   - Uses flexbox
