@@ -14,7 +14,7 @@ const defaults = {
 			xs: 476,
 			sm: 768,
 			md: 992,
-			lg: 1500,
+			lg: 1300,
 		}
 	}
 export const BlokiContext = React.createContext();
@@ -83,9 +83,9 @@ export default BlokiProvider;
 
 BlokiProvider.propTypes = {
 	theme: PropTypes.object,
-	children: PropTypes.node.isRequired
+	children: PropTypes.node.isRequired,
 }
-BlokiProvider.defaultProps = {
+BlokiProvider.defaultProps =   {
 	theme: {
 	}
 }

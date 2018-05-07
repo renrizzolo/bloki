@@ -14,11 +14,11 @@ export default class Bloki extends Component {
 			justify,
 			col,
 			row,
-			auto,
 			spacing,
 			sticky,
 			style,
 		} = this.props;
+		
 		this.setState({
 			computedStyle: {
 				minHeight: '1px',
@@ -99,7 +99,7 @@ export default class Bloki extends Component {
 			margin = `${spacing / 2}`;
 		}
 
-		if ( col && auto || row ) {
+		if ( (col && auto) || row ) {
 			flexGrow = 1;
 		}
 		if ( nest ) {
@@ -193,6 +193,9 @@ Bloki.propTypes = {
 	innerSpacing: PropTypes.bool,
 	sticky: PropTypes.bool,
 	col: PropTypes.bool,
+	row: PropTypes.bool,
+	auto: PropTypes.bool,
+	nest: PropTypes.bool,
 	xs: PropTypes.number,
 	sm: PropTypes.number,
 	md: PropTypes.number,
@@ -221,12 +224,12 @@ Bloki.defaultProps = {
 	md: null,
 	lg: null,
 	xl: null,
+	mb: false,
 	xsUpStyle: null,
 	smUpStyle: null,
 	mdUpStyle: null,
 	lgUpStyle: null,
 	xlUpStyle: null,
-	mb: false,
 	debug: false,
 }
 

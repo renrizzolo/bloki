@@ -12,12 +12,11 @@ const blokiTheme = {
 		xs: 420,
 		sm: 720,
 		md: 960,
-		lg: 1120,
+		lg: 1320,
 	}
 }
 const styles = {
 	root: {
-		maxWidth: 1200,
 		margin: `${blokiTheme.spacing} auto`,
 		fontFamily: 'Helvetica',
 	},
@@ -51,18 +50,20 @@ class App extends Component {
 	render() {
 		return (
 			<BlokiProvider theme={blokiTheme}>
-				<Bloki 
+				<Bloki
+					debug
 					style={styles.root} 
 					justify="center" 
-					mdStyle={{maxWidth: blokiTheme.breakpoints.sm - 32 }} 
-					lgStyle={{maxWidth: blokiTheme.breakpoints.md - 32 }}
+					mdUpStyle={{maxWidth: blokiTheme.breakpoints.md - 256}} 
+					lgUpStyle={{maxWidth: blokiTheme.breakpoints.md }}
+					xlUpStyle={{maxWidth: blokiTheme.breakpoints.lg - 64}}
 				>
 				{theme => (
 					<React.Fragment>
 						<Bloki row justify="center">
-							<Bloki 
-								
-								col 
+							<Bloki
+								col
+								className={theme.up.includes('md') ? "the-class" : "the-other-class"}
 								mb 
 								xl={9} 
 								lg={9} 
@@ -101,10 +102,10 @@ class App extends Component {
 								</Bloki>
 							</Bloki>
 							<Bloki row nest>
-								<Bloki auto col mb={theme.spacing * 2} innerSpacing={false} md={6}>
+								<Bloki col auto mb={theme.spacing * 2} innerSpacing={false} md={6}>
 									<div style={styles.cover}/>
 								</Bloki>
-								<Bloki auto col mb md={6} mdStyle={{display:'flex'}} style={{...styles.col, display:'none'}}>
+								<Bloki col auto mb md={6} mdStyle={{display:'flex'}} style={{...styles.col, display:'none'}}>
 										<div>
 											<h3>Test col 3</h3>
 											<p style={styles.hint}>{`I'm only visible @ ${theme.breakpoints.sm}px - ${theme.breakpoints.md - 1}px  (md) breakpoint`}</p>
@@ -116,16 +117,16 @@ class App extends Component {
 								<Bloki col innerSpacing={false}>
 									<h1>Woo</h1>
 								</Bloki>
-								<Bloki col xs={12} md={12} sm={6} auto style={{backgroundColor: 'cornflowerblue', color: 'white',}} >
+								<Bloki col xs={blokiTheme.columns} md={blokiTheme.columns} sm={blokiTheme.columns / 2} auto style={{backgroundColor: 'cornflowerblue', color: 'white',}} >
 									<h2>Test col 6</h2>
 								</Bloki>
-								<Bloki  col xs={12} md={12} sm={6} auto style={{backgroundColor: 'cornflowerblue', color: 'white',}} >
+								<Bloki  col xs={blokiTheme.columns} md={blokiTheme.columns} sm={blokiTheme.columns / 2} auto style={{backgroundColor: 'cornflowerblue', color: 'white',}} >
 									<h2>Test col 7</h2>
 								</Bloki>
 							</Bloki>
 							</Bloki>
-							<Bloki col mb align="flex-start" xl={3} lg={3} auto style={styles.layout}>
-								<Bloki col debug innerSpacing={false} sticky style={{paddingTop: theme.spacing}}>
+							<Bloki col auto mb align="flex-start" xl={3} lg={3} style={{...styles.layout, display:'none'}} lgUpStyle={{display: 'flex'}}>
+								<Bloki col innerSpacing={false} sticky style={{paddingTop: theme.spacing}}>
 								<h3>Sidebar</h3>
 									sticky stuff mate
 								</Bloki>

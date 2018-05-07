@@ -7,14 +7,19 @@
     "build-dev": "webpack --config webpack.config.js --progress --profile --colors",
     "start": "webpack-dev-server --mode development --progress --profile --colors",
     "dist": "babel src --out-dir lib",
-    "test": "jest"
+    "test": "jest",
+    "lint": "eslint src"
   },
   "jest": {
     "verbose": true,
     "setupTestFrameworkScriptFile": "<rootDir>/tests/index.js"
   },
   "author": "Ren Rizzolo",
-  "keywords": ["react", "grid", "flexbox"],
+  "keywords": [
+    "react",
+    "grid",
+    "flexbox"
+  ],
   "repository": {
     "type": "git",
     "url": "git+https://github.com/renrizzolo/bloki.git"
