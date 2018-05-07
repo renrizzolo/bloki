@@ -4,6 +4,8 @@ Bloki
 A grid system for React.  
 Uses the new context API – so **you need to use react > 16.3.0**
 
+![Bloki logo](bloki_logo.png "Bloki")
+
 ### Features:
   - Uses flexbox
   - Optional automatic column widths / wrapping
@@ -14,7 +16,7 @@ Uses the new context API – so **you need to use react > 16.3.0**
  ---
 🚨 I've not yet used this in a real project. There might (will?) be some quirks / bugs. Please send me PRs or issues if you have problems :)
 
-![Bloki](screenshot.png "Bloki")
+![Bloki Screenshot](screenshot.png "Bloki")
 
 ### Overview
 The API is similar to `material-ui` Grid. 
