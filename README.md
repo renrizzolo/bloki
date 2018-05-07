@@ -14,6 +14,8 @@ Uses the new context API – so **you need to use react > 16.3.0**
  ---
 🚨 I've not yet used this in a real project. There might (will?) be some quirks / bugs. Please send me PRs or issues if you have problems :)
 
+![Bloki](screenshot.png "Bloki")
+
 ### Overview
 The API is similar to `material-ui` Grid. 
 Rows and columns are specified by the prop `row` or `col`.
