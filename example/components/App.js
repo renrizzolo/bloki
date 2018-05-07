@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import OtherComponent from './OtherComponent';
-import Bloki, { BlokiProvider } from '../../';
-//import BlokiProvider from '../../lib/BlokiProvider';
+//import Bloki, { BlokiProvider } from '../../src';
+import Bloki from '../../src/Bloki';
+import BlokiProvider from '../../src/BlokiProvider';
 
 const blokiTheme = {
 	spacing: 12,
