@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { BlokiContext } from './BlokiProvider';
-import prefix from 'react-prefixer';
 
 export default class Bloki extends Component {
 	state = {
