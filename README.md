@@ -4,6 +4,8 @@ Bloki
 A grid system for React.  
 Uses the new context API – so **you need to use react > 16.3.0**
 
+edit (after actually trying to use it in a project): this sucks, currently working on making it less sucks.
+
 ![Bloki logo](Bloki_logo.png "Bloki")
 
 ### Features:
@@ -13,17 +15,21 @@ Uses the new context API – so **you need to use react > 16.3.0**
   - Breakpoint specific styles / breakpoint & up styles
   - Render function can be used to access current breakpoint for easily changing content at different viewport sizes
   - `sticky` prop to apply sticky / -webkit-sticky to the element
+  - uses `react-emotion` for the styles, so you don't have to worry about prefixes, and you shouldn't run into specificity problems when using a library like `react-emotion` or `styled-components` yourself.
+
  ---
-🚨 I've not yet used this in a real project. There might (will?) be some quirks / bugs. Please send me PRs or issues if you have problems :)
+🚨 I've not yet used this in a real project. There are some quirks / bugs. Please send me PRs or issues if you have problems :)
 
 ![Bloki Screenshot](screenshot.png "Bloki")
 
 ### Overview
 The API is similar to `material-ui` Grid. 
 Rows and columns are specified by the prop `row` or `col`.
+You can specify which dom element (string e.g 'aside'), or component (e.g MyClass) to use with the `component` prop (defaults to div).
+
 ```js
 <BlokiProvider theme={theme}>
-  <Bloki row>
+  <Bloki row component="main">
     <Bloki col lg={4} md={12}>
       1
     </Bloki>
@@ -160,10 +166,10 @@ Columns are specified with the `col` prop.
 |row | false| boolean | specify a row |
 |auto | false| boolean | auto columns have `flexGrow: 1` and no max-width or flex-basis, so they should automatically size / wrap themselves |
 |nest | false| boolean | gives a row negative margin, and no max-width / flex-basis, for properly nesting rows inside rows |
-|xs | null| number | the amount of columns a `col` should span up to the `xs` breakpoint |
-|sm | null| number | the amount of columns a `col` should span at the `sm` breakpoint |
-|md | null| number | the amount of columns a `col` should span at the `md` breakpoint |
-|lg | null| number | the amount of columns a `col` should span at the `lg` breakpoint |
+|xs | null| number | the amount of columns a `col` should span up to/above the `xs` breakpoint |
+|sm | null| number | the amount of columns a `col` should span at/above the `sm` breakpoint |
+|md | null| number | the amount of columns a `col` should span at/above the `md` breakpoint |
+|lg | null| number | the amount of columns a `col` should span at/above the `lg` breakpoint |
 |xl | null| number | the amount of columns a `col` should span above the `lg` breakpoint |
 |mb | false| boolean OR number | if true, adds a margin bottom of `theme.spacing` or the `spacing` prop if provided. Otherwise a specific number can be provided. |
 |xsUpStyle | null| object | the style to be applied including & above the `xs` breakpoint |
