@@ -3,7 +3,7 @@ import OtherComponent from './OtherComponent';
 //import Bloki, { BlokiProvider } from '../../src';
 import Bloki from '../../src/Bloki';
 import BlokiProvider from '../../src/BlokiProvider';
-
+import styled, { css } from 'react-emotion';
 const blokiTheme = {
 	spacing: 12,
 	columns: 12,
@@ -25,6 +25,7 @@ const styles = {
 		border: '1px solid #dadada',
 	},
 	layout: {
+		marginLeft: 20,
 		border: '1px solid #b0b0b0',
 		//backgroundColor: '#dadada',
 	},
@@ -46,6 +47,9 @@ const styles = {
 		borderBottom:'1px solid white'
 	}
 }
+const StyledTest = styled('section')`
+background-color: orchid;`;
+
 class App extends Component {
 	render() {
 		return (
@@ -62,11 +66,13 @@ class App extends Component {
 					<React.Fragment>
 						<Bloki row justify="center">
 							<Bloki
+								component='span'
 								col
-								className={theme.up.includes('md') ? "the-class" : "the-other-class"}
-								mb 
-								xl={9} 
-								lg={9} 
+								className={theme.up.includes('md') ? css`margin-left: 12px;margin-right: 12px;` : "the-other-class"}
+								mb
+								// xl={9} 
+								// lg={9}
+								xs={12}
 								auto 
 								wrap={false} 
 								style={styles.layout}
@@ -114,7 +120,7 @@ class App extends Component {
 							</Bloki>
 							<OtherComponent/>
 							<Bloki row nest>
-								<Bloki col innerSpacing={false}>
+										<Bloki col innerSpacing={false} debug component={'section'}>
 									<h1>Woo</h1>
 								</Bloki>
 								<Bloki col xs={blokiTheme.columns} md={blokiTheme.columns} sm={blokiTheme.columns / 2} auto style={{backgroundColor: 'cornflowerblue', color: 'white',}} >
