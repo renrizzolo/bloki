@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { BlokiContext } from './BlokiProvider';
+import styled from 'react-emotion';
+
 
 export default class Bloki extends Component {
 	state = {
@@ -66,7 +68,7 @@ export default class Bloki extends Component {
     	return window.CSS.supports(property, value);
   	}
 	}
-	getStyles = (theme) => {
+	getStyles = (theme, colWidths) => {
 		const spacing = this.props.spacing || theme.spacing || 0;
 		const { 			
 			col,
@@ -74,7 +76,6 @@ export default class Bloki extends Component {
 			auto,
 			nest,
 			sticky,
-			xs, sm,	md,	lg,	xl,
 			mb,
 			innerSpacing,
 		} = this.props;
@@ -104,15 +105,15 @@ export default class Bloki extends Component {
 		}
 		if ( nest ) {
 			margin = `-${spacing / 2}`;
-		}
-
+    }
+    
 		const stickyPos = this.supports('position', 'sticky') ? 'sticky' : '-webkit-sticky';
 		const stickyStyle = sticky ? { top: 0, zIndex: 99, position: stickyPos } : {};
 
 		const marginBottom = mb && typeof mb === 'boolean' ? spacing : mb;
 		const styles = {
-    	flexBasis: nest ? null : this.columnWidth({xs, sm,	md,	lg,	xl}, theme, spacing),
-      maxWidth: nest ? null : this.columnWidth({xs, sm,	md,	lg,	xl}, theme, spacing),
+      flexBasis: nest ? null : this.columnWidth(colWidths, theme, spacing),
+      maxWidth: nest ? null : this.columnWidth(colWidths, theme, spacing),
     	padding: padding,
     	marginLeft: margin,
 			marginRight: margin,
@@ -123,7 +124,8 @@ export default class Bloki extends Component {
     }
     this.props.debug && console.log(styles);
 		return styles;
-	}
+  }
+  
 	getBreakpointUpStyle = (currentBreakpoint, up) => {
 		// theme.up is an array of breakpoints includeing and above the current breakpoint
 		// ['xs', 'md', 'lg', 'xl']
@@ -141,15 +143,22 @@ export default class Bloki extends Component {
     return breakpointUpStyles;
 	}
 
+
+  Block = 
+    styled(this.props.component === Bloki ? 'div' : this.props.component)((props) => ({
+        ...props.styles
+      }))
+
 	render() {
 		const {
 			children,
 			style,
-			debug,
-			className,
+      debug,
+      component,
+      xs, sm, md, lg, xl,
 			...rest
 		} = this.props;
-		
+
 		return (
 			<BlokiContext.Consumer>
       {(theme) => {
@@ -157,26 +166,43 @@ export default class Bloki extends Component {
       	if (!theme) {
       		console.error('Bloki needs to be wrapped in a <BlokiProvider/>, with an optional theme')
       		return;
-      	}
-      	const styles = this.getStyles(theme);
+        }
+
+        // make the breakpoints above 
+        // the first supplied equal to that
+        // e.g xs:6 sm:8 md:null lg: null xl: null
+        // becomes xs:6 sm:8 md:8 lg: 8 xl: 8
+        //
+        // unsupplied sizes below the lowest supplied
+        //  are converted to max cols 
+        // it's crude I know...
+
+        let arr = [xl, lg, md, sm, xs];
+        arr.forEach((el, i) => {
+          if (!el) arr[i] = arr[i + 1] || arr[i + 2] || arr[i + 3] || arr[i + 3] || theme.columns;
+        })
+        
+      	const styles = this.getStyles(theme, arr);
       	const breakPointStyle = `${theme.currentBreakpoint}Style`;
       	const breakPointUpStyle = this.getBreakpointUpStyle(theme.currentBreakpoint, theme.up);
 	      return (
 	      // can be a render function returning the theme
-	      typeof children === 'function' ?
-	      <div 
-		      className={className}
-			    style={{...styles, ...style, ...this.props[breakPointStyle],  ...breakPointUpStyle}}
-	      >
+        typeof children === 'function' ?
+        <this.Block 
+          {...rest} 
+          component={component}
+          styles={{...styles, ...style, ...this.props[breakPointStyle], ...breakPointUpStyle}}
+        >
 	    		{children(theme)}
-	      </div>
+        </this.Block>
 	      :
-	      <div
-	      	className={className}
-		      style={{...styles, ...style, ...this.props[breakPointStyle], ...breakPointUpStyle}}
+        <this.Block
+          {...rest}
+          component={component}
+		      styles={{...styles, ...style, ...this.props[breakPointStyle], ...breakPointUpStyle}}
 	      >
 					{children}
-				</div>
+				</this.Block>
 			
 				)
 			}
@@ -186,7 +212,9 @@ export default class Bloki extends Component {
 	}
 }
 
+
 Bloki.propTypes = {
+  component: PropTypes.oneOfType([PropTypes.string, PropTypes.function]),
 	wrap: PropTypes.bool,
 	align: PropTypes.string,
 	justify: PropTypes.string,
@@ -210,6 +238,7 @@ Bloki.propTypes = {
 	debug: PropTypes.bool,
 }
 Bloki.defaultProps = {
+  component: 'div',
 	wrap: true,
 	align: 'stretch',
 	justify: 'flex-start',

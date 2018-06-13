@@ -23,7 +23,7 @@ class BlokiProvider extends Component {
 	state = {
 		breakpoint: 'xl'
 	}
-	timeout = 125;
+	timeout = 200;
 	componentWillMount() {
 		this.setBreakpoint();
 		this.setTheme();
