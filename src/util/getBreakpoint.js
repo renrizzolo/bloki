@@ -19,9 +19,9 @@ const getBreakpoint = (themeBreakpoints) => {
   if (viewport) {
     currentBreakpoint = 'xs';
     if (breakpoints.xs && viewport >= breakpoints.xs) currentBreakpoint = 'sm';
-    if (breakpoints.sm && viewport >= breakpoints.sm)currentBreakpoint = 'md';
-    if (breakpoints.md && viewport >= breakpoints.md)currentBreakpoint = 'lg';
-    if (breakpoints.lg && viewport >= breakpoints.lg)currentBreakpoint = 'xl';
+    if (breakpoints.sm && viewport >= breakpoints.sm) currentBreakpoint = 'md';
+    if (breakpoints.md && viewport >= breakpoints.md) currentBreakpoint = 'lg';
+    if (breakpoints.lg && viewport >= breakpoints.lg) currentBreakpoint = 'xl';
   }
   console.log(currentBreakpoint, viewport);
   return currentBreakpoint;

@@ -23,14 +23,15 @@ class BlokiProvider extends Component {
 	state = {
 		breakpoint: 'xl'
 	}
-	timeout = 200;
+	timeout = false;
+	delay = 2000;
 	componentWillMount() {
 		this.setBreakpoint();
 		this.setTheme();
 	}
   componentDidMount = () => {
-    this.listener = this.throttle(
-    	this.setBreakpoint, this.timeout
+    this.listener = this.debounce(
+    	this.setBreakpoint
     	);
     window.addEventListener('resize', this.listener);
   }
@@ -38,21 +39,28 @@ class BlokiProvider extends Component {
  	componentWillUnmount = () => {
     window.removeEventListener('resize', this.listener);
   }
-
-	throttle = (func, timeout) => {
-	  let inThrottle
+	// shouldComponentUpdate = (nextProps, nextState) => {
+	// 	if (this.state.breakPoint !== nextState.breakPoint) {
+	// 		return true;
+	// 	}
+	// 	if (this.state.up !== nextState.up) {
+	// 		return true;
+	// 	}
+	// 	return false;
+	// }
+	debounce = (func) => {
 	  return () => {
 	    const args = arguments
 	    const context = this
-	    if (!inThrottle) {
-	      func.apply(context, args)
-	      inThrottle = true
-	      setTimeout(() => inThrottle = false, timeout)
-	    }
-	  }
+			clearTimeout(this.timeout);
+			// start timing for event "completion"
+			this.timeout = setTimeout(func.apply(context, args), this.delay);
+		}
 	}
 
 	setBreakpoint = () => {
+		console.log('set breakpoint');
+		
 		const breakpoint = getBreakpoint(this.props.theme.breakpoints);
 		const breakpointsUpArray = ['xs','sm','md','lg','xl'];
 		// return the breakpoints including and above the current

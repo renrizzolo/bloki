@@ -25,7 +25,6 @@ const styles = {
 		border: '1px solid #dadada',
 	},
 	layout: {
-		marginLeft: 20,
 		border: '1px solid #b0b0b0',
 		//backgroundColor: '#dadada',
 	},
@@ -54,6 +53,19 @@ class App extends Component {
 	render() {
 		return (
 			<BlokiProvider theme={blokiTheme}>
+			<Bloki style={styles.root} justify="center">
+				<Bloki row>
+					<Bloki col md={4} xs={12} style={{background: 'antiquewhite'}}>
+						<p>col 1</p>
+					</Bloki>
+					<Bloki col auto md={4} xs={12} style={{ background: 'bisque' }}>
+						<p>col 2</p>
+					</Bloki>
+					<Bloki col auto lg={6} style={{ background: 'blanchedalmond' }}>
+						<p>col 3</p>
+					</Bloki>
+				</Bloki>
+			</Bloki>
 				<Bloki
 					debug
 					style={styles.root} 
@@ -70,66 +82,65 @@ class App extends Component {
 								col
 								className={theme.up.includes('md') ? css`margin-left: 12px;margin-right: 12px;` : "the-other-class"}
 								mb
-								// xl={9} 
-								// lg={9}
-								xs={12}
+								xl={9} 
+								md={4}
 								auto 
 								wrap={false} 
 								style={styles.layout}
 							>
-							<Bloki row nest>
-								<Bloki col auto mb style={styles.col} mdUpStyle={{border:'1px solid pink'}}>
-									<h3>Test col 1</h3>
-									<ul>
-										<li><code>auto col</code> = fluid width </li>
-										<li>this column will be wider then the next one <br/> because it has more content.</li>
-										<li>They will automatically wrap.</li>
-										<li>These columns also have <code>mb</code> for a <code>theme.spacing</code> margin bottom.</li>
-										<li>Without auto, columns will be full width by defaut.</li>
-										<li >But can be overridden by <code>{`breakpoint={n columns}`}</code>.</li>
-									</ul>
-									<h4>Breakpoint styling</h4>
-									<p>Bloki uses a mobile-first approach.</p>
-									<p>Use the <code>[breakpoint]UpStyle</code> prop  <br/>to specify styles for that breakpoint and above</p>
-									<p>this column has <code>{`mdUpStyle={{border:'1px solid pink'}}`}</code></p>
-									<h4>using the breakpoints in other elements</h4>
-									<p><code>theme.up</code> is an array of breakpoints <br/> including and above the current breakpoint.</p>
-										<p style={theme.up.includes('md') ? {color: 'orange'} : {}}>
-										{(theme.up.includes('md')) ? `i'm here all night (unless the breakpoint < md)` : `Well I'm still here`}
-										</p>
+								<Bloki row >
+									<Bloki col auto mb style={styles.col} mdUpStyle={{border:'1px solid pink'}}>
+										<h3>Test col 1</h3>
+										<ul>
+											<li><code>auto col</code> = fluid width </li>
+											<li>this column will be wider then the next one <br/> because it has more content.</li>
+											<li>They will automatically wrap.</li>
+											<li>These columns also have <code>mb</code> for a <code>theme.spacing</code> margin bottom.</li>
+											<li>Without auto, columns will be full width by defaut.</li>
+											<li >But can be overridden by <code>{`breakpoint={n columns}`}</code>.</li>
+										</ul>
+										<h4>Breakpoint styling</h4>
+										<p>Bloki uses a mobile-first approach.</p>
+										<p>Use the <code>[breakpoint]UpStyle</code> prop  <br/>to specify styles for that breakpoint and above</p>
+										<p>this column has <code>{`mdUpStyle={{border:'1px solid pink'}}`}</code></p>
+										<h4>using the breakpoints in other elements</h4>
+										<p><code>theme.up</code> is an array of breakpoints <br/> including and above the current breakpoint.</p>
+											<p style={theme.up.includes('md') ? {color: 'orange'} : {}}>
+											{(theme.up.includes('md')) ? `i'm here all night (unless the breakpoint < md)` : `Well I'm still here`}
+											</p>
+									</Bloki>
+									<Bloki col auto mb style={styles.col}>
+										<h3>Test col 2</h3>
+									</Bloki>
 								</Bloki>
-								<Bloki col auto mb style={styles.col}>
-									<h3>Test col 2</h3>
+								<Bloki row  sticky>
+									<Bloki col auto style={styles.info}>
+										<p>Current breakpoint: <strong>{`{${theme.currentBreakpoint}} up to ${theme.breakpoints[theme.currentBreakpoint] ? theme.breakpoints[theme.currentBreakpoint] : '∞'}`}</strong></p>
+									</Bloki>
 								</Bloki>
-							</Bloki>
-							<Bloki row nest sticky>
-								<Bloki col auto style={styles.info}>
-									<p>Current breakpoint: <strong>{`{${theme.currentBreakpoint}} up to ${theme.breakpoints[theme.currentBreakpoint] ? theme.breakpoints[theme.currentBreakpoint] : '∞'}`}</strong></p>
+								<Bloki row >
+									<Bloki col auto mb={theme.spacing * 2} innerSpacing={false} md={6}>
+										<div style={styles.cover}/>
+									</Bloki>
+									<Bloki col auto mb md={6} mdStyle={{display:'flex'}} style={{...styles.col, display:'none'}}>
+											<div>
+												<h3>Test col 3</h3>
+												<p style={styles.hint}>{`I'm only visible @ ${theme.breakpoints.sm}px - ${theme.breakpoints.md - 1}px  (md) breakpoint`}</p>
+											</div>
+									</Bloki>
 								</Bloki>
-							</Bloki>
-							<Bloki row nest>
-								<Bloki col auto mb={theme.spacing * 2} innerSpacing={false} md={6}>
-									<div style={styles.cover}/>
+								{/* <OtherComponent/> */}
+								<Bloki row >
+									<Bloki col innerSpacing={false} debug component={'section'}>
+										<h1>Woo</h1>
+									</Bloki>
+									<Bloki col xs={blokiTheme.columns} md={blokiTheme.columns} sm={blokiTheme.columns / 2} auto style={{backgroundColor: 'cornflowerblue', color: 'white',}} >
+										<h2>Test col 6</h2>
+									</Bloki>
+									<Bloki  col xs={blokiTheme.columns} md={blokiTheme.columns} sm={blokiTheme.columns / 2} auto style={{backgroundColor: 'cornflowerblue', color: 'white',}} >
+										<h2>Test col 7</h2>
+									</Bloki>
 								</Bloki>
-								<Bloki col auto mb md={6} mdStyle={{display:'flex'}} style={{...styles.col, display:'none'}}>
-										<div>
-											<h3>Test col 3</h3>
-											<p style={styles.hint}>{`I'm only visible @ ${theme.breakpoints.sm}px - ${theme.breakpoints.md - 1}px  (md) breakpoint`}</p>
-										</div>
-								</Bloki>
-							</Bloki>
-							<OtherComponent/>
-							<Bloki row nest>
-										<Bloki col innerSpacing={false} debug component={'section'}>
-									<h1>Woo</h1>
-								</Bloki>
-								<Bloki col xs={blokiTheme.columns} md={blokiTheme.columns} sm={blokiTheme.columns / 2} auto style={{backgroundColor: 'cornflowerblue', color: 'white',}} >
-									<h2>Test col 6</h2>
-								</Bloki>
-								<Bloki  col xs={blokiTheme.columns} md={blokiTheme.columns} sm={blokiTheme.columns / 2} auto style={{backgroundColor: 'cornflowerblue', color: 'white',}} >
-									<h2>Test col 7</h2>
-								</Bloki>
-							</Bloki>
 							</Bloki>
 							<Bloki col auto mb align="flex-start" xl={3} lg={3} style={{...styles.layout, display:'none'}} lgUpStyle={{display: 'flex'}}>
 								<Bloki col innerSpacing={false} sticky style={{paddingTop: theme.spacing}}>

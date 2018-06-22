@@ -24,7 +24,7 @@ export default class Bloki extends Component {
 		this.setState({
 			computedStyle: {
 				minHeight: '1px',
-    		position: 'relative',
+    			position: 'relative',
 				boxSizing: 'border-box',
 				display: 'flex',
 				flexWrap: wrap ? 'wrap' : 'nowrap',
@@ -41,10 +41,10 @@ export default class Bloki extends Component {
 
 	  debug && (
 		 	console.log(normalizedWidth),
-		 	console.log(`calc(${(100 / columns) * normalizedWidth}% - ${spacing}px)`)
+		 	console.log(`calc(${(100 / columns) * normalizedWidth}%)`)
 		 );
 
-	  return `calc(${(100 / columns) * normalizedWidth}% - ${spacing}px)`;
+	  return `calc(${(100 / columns) * normalizedWidth}%)`;
 	};
 
 	columnWidth = (width, theme, spacing) => {
@@ -54,13 +54,13 @@ export default class Bloki extends Component {
 			auto,
 			nest
 		} = this.props;
-
+		console.log('width:',width)
 		if ( col && width[theme.currentBreakpoint] ) {
 				return this.getWidth(width[theme.currentBreakpoint], theme.columns, spacing)
 			} else if ( row ) {
 				return '100%'
 			} else {
-				return auto || (!col && !row) ? null : this.getWidth(theme.columns, theme.columns, spacing)
+				return (auto || (!col && !row)) ? null : this.getWidth(theme.columns, theme.columns, spacing)
 			}
 	}
 	supports = (property, value) => {
@@ -89,7 +89,7 @@ export default class Bloki extends Component {
 		}
 
 		if ( col ) {
-			margin = spacing / 2;
+			// margin = spacing / 2;
 			padding = theme.innerSpacing ? spacing : 0;
 			if (typeof innerSpacing === 'boolean') {
 				padding = innerSpacing ? spacing : 0;
@@ -97,7 +97,7 @@ export default class Bloki extends Component {
 		}
 		else if ( row ) {
 			padding = 0;
-			margin = `${spacing / 2}`;
+			margin = `-${spacing}`;
 		}
 
 		if ( (col && auto) || row ) {
@@ -112,8 +112,8 @@ export default class Bloki extends Component {
 
 		const marginBottom = mb && typeof mb === 'boolean' ? spacing : mb;
 		const styles = {
-      flexBasis: nest ? null : this.columnWidth(colWidths, theme, spacing),
-      maxWidth: nest ? null : this.columnWidth(colWidths, theme, spacing),
+      	flexBasis: nest ? null : this.columnWidth(colWidths, theme, spacing),
+      	maxWidth: nest ? null : this.columnWidth(colWidths, theme, spacing),
     	padding: padding,
     	marginLeft: margin,
 			marginRight: margin,
@@ -151,12 +151,13 @@ export default class Bloki extends Component {
 
 	render() {
 		const {
-			children,
-			style,
-      debug,
-      component,
-      xs, sm, md, lg, xl,
-			...rest
+		children,
+		style,
+     	debug,
+	  	component,
+	  	auto,
+      	xs, sm, md, lg, xl,
+		...rest
 		} = this.props;
 
 		return (
@@ -177,12 +178,15 @@ export default class Bloki extends Component {
         //  are converted to max cols 
         // it's crude I know...
 
-        let arr = [xl, lg, md, sm, xs];
-        arr.forEach((el, i) => {
-          if (!el) arr[i] = arr[i + 1] || arr[i + 2] || arr[i + 3] || arr[i + 3] || theme.columns;
+		let widths = {xl, lg, md, sm, xs};
+		const arr = [xl, lg, md, sm, xs];
+
+		Object.keys(widths).forEach((key, i) => {
+			console.log(arr[i], arr, i)
+			if (!auto && !widths[key]) widths[key] = arr[i + 1] || arr[i + 2] || arr[i + 3] || arr[i + 3] || theme.columns;
         })
-        
-      	const styles = this.getStyles(theme, arr);
+        console.log(widths);
+		const styles = this.getStyles(theme, widths);
       	const breakPointStyle = `${theme.currentBreakpoint}Style`;
       	const breakPointUpStyle = this.getBreakpointUpStyle(theme.currentBreakpoint, theme.up);
 	      return (
