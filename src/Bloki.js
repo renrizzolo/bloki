@@ -44,7 +44,7 @@ export default class Bloki extends Component {
 		 	console.log(`calc(${(100 / columns) * normalizedWidth}%)`)
 		 );
 
-	  return `calc(${(100 / columns) * normalizedWidth}%)`;
+	  return `${Math.round((100 / columns) * normalizedWidth)}%`;
 	};
 
 	columnWidth = (width, theme, spacing) => {
