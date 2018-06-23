@@ -1,7 +1,13 @@
 import React from 'react'
-import { shallow, mount } from 'enzyme'
+import { shallow, mount, render } from 'enzyme'
 import Bloki, { BlokiProvider } from '../src';
+import * as emotion from 'emotion'
+import renderer from 'react-test-renderer'
+import { createSerializer, createMatchers } from 'jest-emotion'
+import { BlokiContext } from '../src/BlokiProvider';
+expect.extend(createMatchers(emotion))
 
+expect.addSnapshotSerializer(createSerializer(emotion))
 // just a few basic tests
 
 const defaultProps = { 
@@ -14,6 +20,7 @@ const defaultProps = {
   row: false,
   auto: false,
   nest: false,
+  component: 'div',
   xs: null,
   sm: null,
   md: null,
@@ -37,7 +44,7 @@ const defaultTheme = {
       xs: 476,
       sm: 768,
       md: 992,
-      lg: 1500,
+      lg: 1300,
     },
     currentBreakpoint: 'xs',
     up: [
@@ -92,35 +99,45 @@ describe('rendering', () => {
 describe('styles', () => {
   const spacing = 24;
   const props = createTestProps({
-    justify: 'center', 
-    align: 'center', 
-    wrap: false, 
-    xs: 6, 
-    spacing, 
+    justify: 'center',
+    align: 'center',
+    wrap: false,
+    xs: 6,
+    spacing,
+    //auto: true,
     col: true
   });
+  // force sm breakpoint
+  global.innerWidth = 477;
 
-  const mounted = mount((
+  const tree = renderer.create(
     <BlokiProvider>
       <Bloki {...props}>
       </Bloki>
     </BlokiProvider>
-    ));
+  ).toJSON()
   describe('Bloki styles and properties', () => {
+    it('Should match the snaphot', () => {
+      expect(tree).toMatchSnapshot()
+    })
+    // it('Should apply auto styles', () => {
+    //   expect(tree).not.toHaveStyleRule('max-width', '50%')
+    // })
     it('Should apply wrap from props', () => {
-      expect(mounted.find(Bloki).getDOMNode()).toHaveProperty('style.flexWrap', 'nowrap')
+      expect(tree).toHaveStyleRule('flex-wrap', 'nowrap')
     })
     it('Should have spacing applied to padding from props', () => {
-      expect(mounted.find(Bloki).getDOMNode()).toHaveProperty('style.padding', `${spacing}px`)
+      expect(tree).toHaveStyleRule('padding', `${spacing}px`)
     })
+    // sm = 6
     it('Should have width applied based on column prop', () => {
-      expect(mounted.find(Bloki).getDOMNode()).toHaveProperty('style.maxWidth', `calc(50% - ${spacing}px)`)
+      expect(tree).toHaveStyleRule('max-width', '50%')
     })
     it('Should have align-items applied based on align prop', () => {
-      expect(mounted.find(Bloki).getDOMNode()).toHaveProperty('style.alignItems', 'center')
+      expect(tree).toHaveStyleRule('align-items', 'center')
     })   
     it('Should have justify-content applied based on justify prop', () => {
-      expect(mounted.find(Bloki).getDOMNode()).toHaveProperty('style.justifyContent', 'center')
+      expect(tree).toHaveStyleRule('justify-content', 'center')
     })
   })
 })
