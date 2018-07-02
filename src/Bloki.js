@@ -56,12 +56,10 @@ export default class Bloki extends Component {
 		} = this.props;
 		console.log('width:',width)
 		if ( col && width[theme.currentBreakpoint] ) {
-				return this.getWidth(width[theme.currentBreakpoint], theme.columns, spacing)
-			} else if ( row ) {
-				return '100%'
-			} else {
-				return (auto || (!col && !row)) ? null : this.getWidth(theme.columns, theme.columns, spacing)
-			}
+			return this.getWidth(width[theme.currentBreakpoint], theme.columns, spacing)
+		} else {
+			return (auto || (!col && !row)) ? null : this.getWidth(theme.columns, theme.columns, spacing)
+		}
 	}
 	supports = (property, value) => {
   	if ('CSS' in window && 'supports' in window.CSS) {
@@ -112,8 +110,8 @@ export default class Bloki extends Component {
 
 		const marginBottom = mb && typeof mb === 'boolean' ? spacing : mb;
 		const styles = {
-      	flexBasis: nest ? null : this.columnWidth(colWidths, theme, spacing),
-      	maxWidth: nest ? null : this.columnWidth(colWidths, theme, spacing),
+      	flexBasis: nest || row ? null : this.columnWidth(colWidths, theme, spacing),
+      	maxWidth: nest || row ? null : this.columnWidth(colWidths, theme, spacing),
     	padding: padding,
     	marginLeft: margin,
 			marginRight: margin,
