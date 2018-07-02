@@ -97,14 +97,14 @@ export default class Bloki extends Component {
 		}
 		else if ( row ) {
 			padding = 0;
-			margin = `-${spacing}`;
+			margin = `-${spacing}px`;
 		}
 
 		if ( (col && auto) || row ) {
 			flexGrow = 1;
 		}
 		if ( nest ) {
-			margin = `-${spacing / 2}`;
+			margin = `-${spacing / 2}px`;
     }
     
 		const stickyPos = this.supports('position', 'sticky') ? 'sticky' : '-webkit-sticky';
